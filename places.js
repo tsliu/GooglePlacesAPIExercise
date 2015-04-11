@@ -10,9 +10,8 @@ function initialize() {
   });
 
   var request = {
-    query: 'sushi near San Mateo'
+     query: 'sushi san mateo'
   };
-
   var service = new google.maps.places.PlacesService(map);
   service.textSearch(request, callback);
 }
@@ -72,5 +71,15 @@ function setMapForMarkers(map) {
     markers[i].setMap(map);
   }
 }
+
+$(document).ready(function(){
+  $('#lookup').click(function() {      
+    var request = {
+      query: $("#inputBox").val()
+    }
+    service = new google.maps.places.PlacesService(map);
+    service.textSearch(request, callback);   
+  });
+});
 
 google.maps.event.addDomListener(window, 'load', initialize);
