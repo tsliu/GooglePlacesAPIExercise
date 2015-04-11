@@ -10,7 +10,7 @@ function initialize() {
   });
 
   var request = {
-     query: 'sushi san mateo'
+     query: ''
   };
   var service = new google.maps.places.PlacesService(map);
   service.textSearch(request, callback);

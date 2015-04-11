@@ -1,3 +1,10 @@
+.navbar {
+  margin-bottom: 0px !important;
+}
+.form-control{
+  width: 1000px !important;
+}
+
 html, body, #map-canvas {
   height: 100%;
   margin: 0px;
