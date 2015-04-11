@@ -1,21 +1,17 @@
-var map, placesList;
+var map;
 var markers = [];
 
 function initialize() {
-  var pyrmont = new google.maps.LatLng(-33.8665433, 151.1956316);
+  var sanmateo = new google.maps.LatLng(37.566284, -122.320273);
 
   map = new google.maps.Map(document.getElementById('map-canvas'), {
-    center: pyrmont,
+    center: sanmateo,
     zoom: 17
   });
 
   var request = {
-    location: pyrmont,
-    radius: 500,
     query: 'sushi near San Mateo'
   };
-
-  placesList = document.getElementById('places');
 
   var service = new google.maps.places.PlacesService(map);
   service.textSearch(request, callback);
@@ -64,7 +60,7 @@ function createMarkers(places) {
     });
     markers.push(marker);
 
-    placesList.innerHTML += '<li>' + place.name + '</li>';
+    $('#place-list').append('<li>' + place.name + '</li>');
 
     bounds.extend(place.geometry.location);
   }
