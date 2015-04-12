@@ -6,14 +6,7 @@ function initialize() {
   var inputBox = document.getElementById('inputBox');
   var autocomplete = new google.maps.places.Autocomplete(inputBox);
 
-
-  var zenefits = new google.maps.LatLng(37.761824, -122.398587);
-
-  map = new google.maps.Map(document.getElementById('map-canvas'), {
-    center: zenefits,
-    zoom: 15
-  });
-
+  map = new google.maps.Map(document.getElementById('map-canvas'));
 
   var request = {
      query: 'sushi in san mateo'
@@ -23,19 +16,15 @@ function initialize() {
   service.textSearch(request, callback);
 
   google.maps.event.addListener(autocomplete, 'place_changed', function() {
-    alert("!");
+    // When a place is selected, search this place instead of directl loading it in map.
+    var request = {
+     query: inputBox.value
+    };
+
+    var service = new google.maps.places.PlacesService(map);
+    service.textSearch(request, callback);
   });
 }
-
-
-  function setupClickListener(id, types) {
-    var radioButton = document.getElementById(id);
-    google.maps.event.addDomListener(radioButton, 'click', function() {
-      autocomplete.setTypes(types);
-    });
-  }
-
-
 
 function callback(results, status, pagination) {
   if (status != google.maps.places.PlacesServiceStatus.OK) {

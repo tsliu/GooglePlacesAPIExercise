@@ -1,8 +1,12 @@
 .navbar {
   margin-bottom: 0px !important;
 }
-.form-control{
+.form-control {
   width: 1000px !important;
+}
+
+.main-container {
+  
 }
 
 html, body, #map-canvas {
