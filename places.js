@@ -81,11 +81,22 @@ function createMarkers(places) {
     });
     markers.push(marker);
 
-    $('#place-list').append('<li>' + place.name + '</li>');
+    $('#place-list').append(generateListItemHTML(i,place));
 
     bounds.extend(place.geometry.location);
   }
   map.fitBounds(bounds);
+}
+
+function generateListItemHTML(index,place) {
+  html = '<div class="panel panel-default">';
+  html += '<div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" data-target="#collapse'+index+'">';
+  html += place.name;
+  html += '</a></h4></div>';
+  html += '<div id="collapse'+index+'" class="panel-collapse collapse"><div class="panel-body">';
+  html += 'something'; // This is the actual content
+  html += '</div></div></div>'
+  return html;
 }
 
 function setMapForMarkers(map) {
