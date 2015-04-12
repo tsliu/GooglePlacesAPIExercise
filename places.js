@@ -106,7 +106,7 @@ function createMarker(i, place, bounds) {
 function generateListItemHTML(i,place) {
   html = '<div id="panel'+i+'" class="panel panel-default">';
   html += '<div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" data-target="#collapse'+i+'">';
-  html += place.name;
+  html += (i+1) + '. ' + place.name;
   html += '</a></h4></div>';
   html += '<div id="collapse'+i+'" class="panel-collapse collapse"><div class="panel-body">';
   html += 'something'; // This is the actual content
@@ -115,7 +115,7 @@ function generateListItemHTML(i,place) {
 }
 
 function generateInfoBoxHTML(i,place) {
-  html = '<a href="#panel'+i+'">'+place.name+'</a>';
+  html = (i+1) + '. <a href="#panel'+i+'">'+place.name+'</a>';
   return html;
 }
 
