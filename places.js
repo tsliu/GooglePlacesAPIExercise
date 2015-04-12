@@ -15,7 +15,7 @@ function initialize() {
   map = new google.maps.Map(document.getElementById('map-canvas'));
   service = new google.maps.places.PlacesService(map);
 
-  search('sushi in san mateo');
+  search();
 
   google.maps.event.addListener(autocomplete, 'place_changed', function() {
     // When a place is selected, search this place instead of directl loading it in map.
