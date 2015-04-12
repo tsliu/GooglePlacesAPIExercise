@@ -1,6 +1,7 @@
 var map;
 var markers = [];
 var service;
+var infowindow;
 
 // Hack: Since google.maps.places.PlaceSearchPagination cannot provide the current page number,
 // I need to know whether the callback function is loading the first page to decide whether to
@@ -14,6 +15,7 @@ function initialize() {
 
   map = new google.maps.Map(document.getElementById('map-canvas'));
   service = new google.maps.places.PlacesService(map);
+  infowindow = new google.maps.InfoWindow();
 
   search();
 
@@ -65,31 +67,40 @@ function createMarkers(places) {
   var bounds = new google.maps.LatLngBounds();
 
   for (var i = 0, place; place = places[i]; i++) {
-    var image = {
-      url: place.icon,
-      size: new google.maps.Size(71, 71),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(25, 25)
-    };
-
-    var marker = new google.maps.Marker({
-      map: map,
-      icon: image,
-      title: place.name,
-      position: place.geometry.location
-    });
-    markers.push(marker);
-
-    $('#place-list').append(generateListItemHTML(i,place));
-
-    bounds.extend(place.geometry.location);
+    createMarker(i, place, bounds);  
   }
+
   map.fitBounds(bounds);
 }
 
+function createMarker(i, place, bounds) {
+  var image = {
+    url: place.icon,
+    size: new google.maps.Size(71, 71),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(17, 34),
+    scaledSize: new google.maps.Size(25, 25)
+  };
+
+  var marker = new google.maps.Marker({
+    map: map,
+    icon: image,
+    title: place.name,
+    position: place.geometry.location
+  });
+
+  google.maps.event.addListener(marker, 'click', function() {
+    infowindow.setContent('<a href="#panel'+i+'">'+place.name+'</a>');
+    infowindow.open(map, this);
+  });
+
+  markers.push(marker);
+  $('#place-list').append(generateListItemHTML(i,place));
+  bounds.extend(place.geometry.location);
+}
+
 function generateListItemHTML(index,place) {
-  html = '<div class="panel panel-default">';
+  html = '<div id="panel'+index+'" class="panel panel-default">';
   html += '<div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" data-target="#collapse'+index+'">';
   html += place.name;
   html += '</a></h4></div>';
