@@ -2,19 +2,40 @@ var map;
 var markers = [];
 
 function initialize() {
-  var sanmateo = new google.maps.LatLng(37.566284, -122.320273);
+
+  var inputBox = document.getElementById('inputBox');
+  var autocomplete = new google.maps.places.Autocomplete(inputBox);
+
+
+  var zenefits = new google.maps.LatLng(37.761824, -122.398587);
 
   map = new google.maps.Map(document.getElementById('map-canvas'), {
-    center: sanmateo,
-    zoom: 17
+    center: zenefits,
+    zoom: 15
   });
 
+
   var request = {
-     query: ''
+     query: 'sushi in san mateo'
   };
+
   var service = new google.maps.places.PlacesService(map);
   service.textSearch(request, callback);
+
+  google.maps.event.addListener(autocomplete, 'place_changed', function() {
+    alert("!");
+  });
 }
+
+
+  function setupClickListener(id, types) {
+    var radioButton = document.getElementById(id);
+    google.maps.event.addDomListener(radioButton, 'click', function() {
+      autocomplete.setTypes(types);
+    });
+  }
+
+
 
 function callback(results, status, pagination) {
   if (status != google.maps.places.PlacesServiceStatus.OK) {
