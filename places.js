@@ -2,6 +2,7 @@ var map;
 var markers = [];
 var service;
 var infowindow;
+var index;
 
 // Hack: Since google.maps.places.PlaceSearchPagination cannot provide the current page number,
 // I need to know whether the callback function is loading the first page to decide whether to
@@ -31,6 +32,8 @@ function callback(results, status, pagination) {
   } else {
 
     if(isFirstPage) {
+      //Reset the index
+      index = -1;
       //Clear current search result
       $('#place-list').empty();
       setMapForMarkers(null);
@@ -67,7 +70,8 @@ function createMarkers(places) {
   var bounds = new google.maps.LatLngBounds();
 
   for (var i = 0, place; place = places[i]; i++) {
-    createMarker(i, place, bounds);  
+    index++;
+    createMarker(index, place, bounds);  
   }
 
   map.fitBounds(bounds);
@@ -99,12 +103,12 @@ function createMarker(i, place, bounds) {
   bounds.extend(place.geometry.location);
 }
 
-function generateListItemHTML(index,place) {
-  html = '<div id="panel'+index+'" class="panel panel-default">';
-  html += '<div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" data-target="#collapse'+index+'">';
+function generateListItemHTML(i,place) {
+  html = '<div id="panel'+i+'" class="panel panel-default">';
+  html += '<div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" data-target="#collapse'+i+'">';
   html += place.name;
   html += '</a></h4></div>';
-  html += '<div id="collapse'+index+'" class="panel-collapse collapse"><div class="panel-body">';
+  html += '<div id="collapse'+i+'" class="panel-collapse collapse"><div class="panel-body">';
   html += 'something'; // This is the actual content
   html += '</div></div></div>'
   return html;
