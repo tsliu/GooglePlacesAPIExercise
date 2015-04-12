@@ -94,7 +94,7 @@ function createMarker(i, place, bounds) {
   });
 
   google.maps.event.addListener(marker, 'click', function() {
-    infowindow.setContent('<a href="#panel'+i+'">'+place.name+'</a>');
+    infowindow.setContent(generateInfoBoxHTML(i,place));
     infowindow.open(map, this);
   });
 
@@ -111,6 +111,11 @@ function generateListItemHTML(i,place) {
   html += '<div id="collapse'+i+'" class="panel-collapse collapse"><div class="panel-body">';
   html += 'something'; // This is the actual content
   html += '</div></div></div>'
+  return html;
+}
+
+function generateInfoBoxHTML(i,place) {
+  html = '<a href="#panel'+i+'">'+place.name+'</a>';
   return html;
 }
 
