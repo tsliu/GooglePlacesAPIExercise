@@ -75,6 +75,10 @@ function createMarkers(places) {
   }
 
   map.fitBounds(bounds);
+
+  // Don't want the map to zoom too closely. Set a maximum zoom of 15 here.
+  var zoom = map.getZoom();
+  map.setZoom(zoom > 15 ? 15 : zoom);
 }
 
 function createMarker(i, place, bounds) {
