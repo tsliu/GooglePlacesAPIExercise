@@ -1,5 +1,11 @@
 var map;
 var markers = [];
+var service;
+
+// Hack: Since google.maps.places.PlaceSearchPagination cannot provide the current page number,
+// I need to know whether the callback function is loading the first page to decide whether to
+// clear previous markers and results.
+var isFirstPage = true;
 
 function initialize() {
 
@@ -7,22 +13,13 @@ function initialize() {
   var autocomplete = new google.maps.places.Autocomplete(inputBox);
 
   map = new google.maps.Map(document.getElementById('map-canvas'));
+  service = new google.maps.places.PlacesService(map);
 
-  var request = {
-     query: 'sushi in san mateo'
-  };
-
-  var service = new google.maps.places.PlacesService(map);
-  service.textSearch(request, callback);
+  search('sushi in san mateo');
 
   google.maps.event.addListener(autocomplete, 'place_changed', function() {
     // When a place is selected, search this place instead of directl loading it in map.
-    var request = {
-     query: inputBox.value
-    };
-
-    var service = new google.maps.places.PlacesService(map);
-    service.textSearch(request, callback);
+    search();
   });
 }
 
@@ -30,16 +27,34 @@ function callback(results, status, pagination) {
   if (status != google.maps.places.PlacesServiceStatus.OK) {
     return;
   } else {
+
+    if(isFirstPage) {
+      //Clear current search result
+      $('#place-list').empty();
+      setMapForMarkers(null);
+      markers = [];
+    } else {
+      // remove the li containing the more button since it'll be added later.
+      $('#more').parent().remove();
+    }
+
     createMarkers(results);
 
-    if (pagination.hasNextPage) {
-      var moreButton = document.getElementById('more');
+    // Set this flag for future page loads.
+    isFirstPage = false;
 
+    if (pagination.hasNextPage) {
+
+      // Append the load more button as part of the list.
+      $('#place-list').append('<li><button id="more" class="btn btn-default">More results</button></li>');
+      
+      var moreButton = document.getElementById('more');
       moreButton.disabled = false;
 
       google.maps.event.addDomListenerOnce(moreButton, 'click',
         function() {
           moreButton.disabled = true;
+          moreButton.innerHTML = '<span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading...';
           pagination.nextPage();
         });
     }
@@ -48,9 +63,6 @@ function callback(results, status, pagination) {
 
 function createMarkers(places) {
   var bounds = new google.maps.LatLngBounds();
-
-  setMapForMarkers(null);
-  markers = [];
 
   for (var i = 0, place; place = places[i]; i++) {
     var image = {
@@ -82,13 +94,18 @@ function setMapForMarkers(map) {
   }
 }
 
+function search(queryString) {
+  isFirstPage = true;
+  queryString = queryString || $('#inputBox').val()
+  var request = {
+     query: queryString
+  };
+  service.textSearch(request, callback);
+}
+
 $(document).ready(function(){
-  $('#lookup').click(function() {      
-    var request = {
-      query: $("#inputBox").val()
-    }
-    service = new google.maps.places.PlacesService(map);
-    service.textSearch(request, callback);   
+  $('#lookup').click(function() { 
+    search();
   });
 });
 
