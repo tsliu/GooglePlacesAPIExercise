@@ -109,13 +109,15 @@ function generateListItemHTML(i,place) {
   html += (i+1) + '. ' + place.name;
   html += '</a></h4></div>';
   html += '<div id="collapse'+i+'" class="panel-collapse collapse"><div class="panel-body">';
-  html += 'something'; // This is the actual content
+  html += place.formatted_address; // This is the actual content
   html += '</div></div></div>'
   return html;
 }
 
 function generateInfoBoxHTML(i,place) {
   html = (i+1) + '. <a href="#panel'+i+'">'+place.name+'</a>';
+  html += '<br />';
+  html += '<span>'+place.formatted_address+'</span>';
   return html;
 }
 
