@@ -74,6 +74,33 @@ function createMarkers(places) {
     createMarker(index, place, bounds);  
   }
 
+  $('.collapse[data-placeId]').on('shown.bs.collapse', function() {
+    var id = $(this).data('placeid');
+    if(!id) return;
+    $(this).data('placeid', null); // Remove data so it won't get loaded again
+
+    var list = $(this).find('ul');
+    // Spinner to indicate loading
+    $(list).append('<li class="text-center"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Loading more details</li>');
+
+    var request = { placeId: id };
+
+    service.getDetails(request, function(details, status) {
+      $(list).find('li:last').remove(); // Remove the loading box.
+      if (status == google.maps.places.PlacesServiceStatus.OK) {
+        if(details.international_phone_number)
+          $(list).append('<li><strong>number:</strong> '+details.international_phone_number+'</li>');
+        if(details.website)
+          $(list).append('<li><strong>website:</strong> '+details.website+'</li>');
+        var opennow = details.opennow ? 'yes' : 'no';
+        $(list).append('<li><strong>open now:</strong> '+opennow+'</li>');
+      } else {
+        $(list).append('<li class="alert alert-danger"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Failed to load details</li>');
+      }
+    });
+
+  });
+
   map.fitBounds(bounds);
 
   // Don't want the map to zoom too closely. Set a maximum zoom of 15 here.
@@ -118,8 +145,11 @@ function generateListItemHTML(i,place) {
   html += '<div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" data-target="#collapse'+i+'">';
   html += (i+1) + '. ' + place.name;
   html += '</a></h4></div>';
-  html += '<div id="collapse'+i+'" class="panel-collapse collapse" data-placeId="'+place.id+'"><div class="panel-body">';
-  html += place.formatted_address; // This is the actual content
+  html += '<div id="collapse'+i+'" class="panel-collapse collapse" data-placeid="'+place.place_id+'"><div class="panel-body">';
+  html += '<ul id="listing-details">'
+  // Actual content begins here
+  html += '<li><strong>address:</strong> ' + place.formatted_address + '</li>';
+  // Actual content ends here
   html += '</div></div></div>';
   return html;
 }
