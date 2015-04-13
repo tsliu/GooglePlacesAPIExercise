@@ -1,0 +1,34 @@
+### TL;DR
+This app is an exercise to use Google Places API's text search capabilities and display the result back.
+This app is on Github! For complete code and commit history, visit: https://github.com/tsliu/GooglePlacesAPIExercise
+
+### Project structure
+The app is purely frontend and does not have any server code. It includes the following files:
+* this README
+* index.html, which contains html elements and headers to import all neccessary resources
+* places.js, which contains most of client side logic
+* places.css, which defines styles and animations
+
+### Features implemented
+* search box with autocomplete support
+* results appear on a list
+* list supports pagination and load more functionality
+* results appear as markers on a google map
+* map resets bound as more results become available
+* markers use google suggested icons
+* highlighting list items will "bounce" the corresponding markers
+* expanding list item will show details
+* only load detail when list item expanded
+* click on marker opens in map infobox
+* infobox has link to expand corresponding list item
+
+### Libraries and frameworks used
+* Google Place js library
+* jquery
+* bootstrap
+* many js code examples found on stackoverflow and jsfiddle
+
+### If I had more time, I'd would...
+* reorganize code and use a better js framework
+* support photos
+* support business hour and ratings
