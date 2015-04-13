@@ -105,7 +105,7 @@ function createMarker(i, place, bounds) {
   markers.push(marker);
   $('#place-list').append(generateListItemHTML(i,place));
   $('#panel' + i).mouseover(function() {
-    marker.setAnimation(google.maps.Animation.DROP);
+    marker.setAnimation(google.maps.Animation.BOUNCE);
   });
   $('#panel' + i).mouseout(function() {
     marker.setAnimation(null);
