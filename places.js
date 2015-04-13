@@ -104,6 +104,12 @@ function createMarker(i, place, bounds) {
 
   markers.push(marker);
   $('#place-list').append(generateListItemHTML(i,place));
+  $('#panel' + i).mouseover(function() {
+    marker.setAnimation(google.maps.Animation.DROP);
+  });
+  $('#panel' + i).mouseout(function() {
+    marker.setAnimation(null);
+  });
   bounds.extend(place.geometry.location);
 }
 
@@ -119,7 +125,7 @@ function generateListItemHTML(i,place) {
 }
 
 function generateInfoBoxHTML(i,place) {
-  html = (i+1) + '. <a href="#panel'+i+'">'+place.name+'</a>';
+  html = (i+1) + '. <a href="#collapse'+i+'">'+place.name+'</a>';
   html += '<br />';
   html += '<span>'+place.formatted_address+'</span>';
   return html;
@@ -144,6 +150,10 @@ $(document).ready(function(){
   $('#lookup').click(function() { 
     search();
   });
+});
+
+$(window).on('hashchange',function(){
+  $(location.hash).collapse('show');
 });
 
 google.maps.event.addDomListener(window, 'load', initialize);
