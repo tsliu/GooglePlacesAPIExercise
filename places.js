@@ -118,9 +118,9 @@ function generateListItemHTML(i,place) {
   html += '<div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" data-target="#collapse'+i+'">';
   html += (i+1) + '. ' + place.name;
   html += '</a></h4></div>';
-  html += '<div id="collapse'+i+'" class="panel-collapse collapse"><div class="panel-body">';
+  html += '<div id="collapse'+i+'" class="panel-collapse collapse" data-placeId="'+place.id+'"><div class="panel-body">';
   html += place.formatted_address; // This is the actual content
-  html += '</div></div></div>'
+  html += '</div></div></div>';
   return html;
 }
 
